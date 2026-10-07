@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve Justin | Creative Technologist & AI Engineer</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        accentCrimson: '#e11d48',
+                        accentCyan: '#06b6d4',
+                        accentViolet: '#8b5cf6',
+                    },
+                    fontFamily: {
+                        display: ['Anton', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                        body: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Link Custom CSS -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="text-white font-body antialiased selection:bg-accentCrimson selection:text-white">
+
+    <!-- Loading Screen -->
+    <div id="loading" class="loading fixed inset-0 bg-black flex flex-col justify-center items-center z-[99999] transition-opacity duration-700">
+        <div class="text-3xl font-heading tracking-widest text-white mb-4 animate-pulse">STEVE JUSTIN</div>
+        <div class="text-xs tracking-widest text-neutral-500 mb-6">LOADING DIGITAL UNIVERSE</div>
+        <div class="loading-bar w-48 h-1 rounded-full overflow-hidden">
+            <div id="progress" class="loading-progress w-0 h-full"></div>
+        </div>
+    </div>
+
+    <!-- Background Silhouette Canvas (Scroll Animated) -->
+    <canvas id="scroll-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none block"></canvas>
+
+    <!-- Hidden SVG definition for sharpening filter -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; pointer-events: none; overflow: hidden;" aria-hidden="true">
+        <filter id="sharpen-filter">
+            <feConvolveMatrix order="3 3" preserveAlpha="true" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"/>
+        </filter>
+    </svg>
+
+    <!-- Floating Navigation Header -->
+    <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/10 border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center transition-all duration-300">
+        <a href="#hero" class="font-heading text-2xl font-bold tracking-widest text-white hover:text-accentCrimson transition-colors duration-300 magnetic-btn">SJ</a>
+        
+        <div class="hidden md:flex space-x-8 text-xs tracking-widest font-heading font-medium">
+            <a href="#hero" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">HOME</a>
+            <a href="#intro" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">ABOUT</a>
+            <a href="#skills" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">SKILLS</a>
+            <a href="#beyond2d" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">BEYOND 2D</a>
+            <a href="#startups" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">STARTUPS</a>
+            <a href="#work" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">WORK</a>
+            <a href="#contact" class="nav-link transition-colors duration-300 hover:text-accentCrimson py-1">CONTACT</a>
+        </div>
+
+        <a href="#contact" class="border border-white/10 px-5 py-2 text-xs font-heading tracking-widest hover:bg-white hover:text-black transition-all duration-300 rounded-full cursor-explore magnetic-btn">
+            CONNECT
+        </a>
+    </nav>
+
+    <!-- Content Wrapper -->
+    <div class="relative z-10 w-full">
+
+        <!-- 1. HERO / LANDING PAGE -->
+        <section id="hero" class="min-h-screen flex flex-col justify-between px-6 md:px-24 py-20 relative overflow-hidden">
+            <!-- Three.js interactive canvas overlay -->
+            <div id="hero-three-canvas" class="absolute top-0 left-0 w-full h-full -z-10"></div>
+            
+            <!-- Float Tag labels tracked in screen coordinates by ThreeJS -->
+            <div class="absolute inset-0 pointer-events-none z-10 overflow-hidden" id="hero-tags-container">
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">AI</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">PYTHON</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">JAVA</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">3D</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">ML</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">WEB</div>
+                <div class="hero-tag-element absolute bg-black/80 border border-white/10 px-3 py-1 text-[10px] font-heading tracking-widest text-white pointer-events-none rounded-full">STARTUPS</div>
+            </div>
+
+            <!-- Top spacers -->
+            <div></div>
+
+            <!-- Main typography container -->
+            <div class="max-w-4xl z-10 my-auto">
+                <h2 class="text-7xl md:text-[10rem] font-display leading-[0.8] tracking-wider mb-4 text-white text-gradient-crimson drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)]">
+                    STEVE JUSTIN
+                </h2>
+                
+                <h3 class="text-xs md:text-sm font-heading tracking-[0.25em] text-accentCyan mb-6 uppercase">
+                    AI & ML ENGINEER × 3D WEB DEVELOPER × CREATIVE TECHNOLOGIST
+                </h3>
+                
+                <p class="text-sm md:text-base text-neutral-400 font-light max-w-xl leading-relaxed mb-10">
+                    Building intelligent systems, immersive digital experiences, and ambitious products.
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    <a href="#work" class="magnetic-btn bg-accentCrimson hover:bg-white hover:text-black text-xs font-heading tracking-widest px-8 py-4 rounded-full transition-all duration-300 cursor-view">
+                        EXPLORE MY WORK
+                    </a>
+                    <a href="#contact" class="magnetic-btn border border-white/15 bg-black/30 hover:bg-white hover:text-black hover:border-white text-xs font-heading tracking-widest px-8 py-4 rounded-full transition-all duration-300 cursor-explore">
+                        LET'S CONNECT
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bottom Landing Page Bar (Styled EXACTLY like reference image) -->
+            <div class="border-t border-white/10 pt-6 mt-12 w-full z-10">
+                <div class="flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs tracking-[0.2em] font-heading text-neutral-400 gap-4">
+                    <div class="flex items-center gap-6 justify-center w-full">
+                        <span>K. RAMAKRISHNAN COLLEGE OF TECHNOLOGY</span>
+                        <span class="w-[1px] h-3 bg-neutral-700"></span>
+                        <span>AI & ML BATCH 2024–2028</span>
+                        <span class="w-[1px] h-3 bg-neutral-700"></span>
+                        <span>STARTUP BUILDER</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INTRO SECTION -->
+        <section id="intro" class="min-h-screen flex flex-col justify-center items-center px-6 md:px-24 py-20 relative">
+            <div class="max-w-4xl text-center z-10 mt-12">
+                <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-4 uppercase">IDENTITY MATRIX</span>
+                <h1 class="reveal-text text-4xl md:text-7xl font-display leading-tight mb-8 text-white">
+                    I BUILD THINGS THAT LIVE BETWEEN <span class="text-accentCrimson">CODE</span> AND <span class="text-accentCyan">CREATIVITY</span>.
+                </h1>
+                <p class="reveal-text text-sm md:text-lg text-neutral-400 font-light max-w-2xl mx-auto leading-relaxed">
+                    Steve Justin is an Artificial Intelligence and Machine Learning student at K. Ramakrishnan College of Technology, batch 2024–2028. He operates at the intersection of intelligence, design, and product engineering.
+                </p>
+                <div class="mt-12 flex justify-center space-x-6">
+                    <a href="#skills" class="magnetic-btn border border-white/20 bg-white/5 hover:bg-white hover:text-black hover:border-white text-xs font-heading tracking-widest px-8 py-3.5 rounded-full transition-all duration-300 cursor-explore">
+                        EXPLORE SKILLS
+                    </a>
+                </div>
+            </div>
+            <!-- Interactive Arrow -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-neutral-500 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- 3. SKILLS SECTION -->
+        <section id="skills" class="min-h-screen px-6 md:px-24 py-32 flex flex-col justify-center">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="mb-20 text-center md:text-left">
+                    <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">CAPABILITIES</span>
+                    <h2 class="text-4xl md:text-6xl font-heading text-white">MY TOOLKIT</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Column 1: AI & Development -->
+                    <div class="skills-category-container flex flex-col gap-6">
+                        <h3 class="text-xs font-heading tracking-widest text-neutral-500 border-b border-white/10 pb-3">AI & DEVELOPMENT</h3>
+                        
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCrimson mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.267m4.5-5.267v5.267M3 12h18m-9 9.75v-5.267M9.75 20.896v-5.267m4.5 5.267v-5.267m-12.75-3.32h16.5a1.5 1.5 0 001.5-1.5V6.75a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v6.75a1.5 1.5 0 001.5 1.5z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">ARTIFICIAL INTELLIGENCE</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Deep neural networks, model training, generative pipelines, and agentic workflows.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCrimson mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.667 11.72a4.5 4.5 0 000 8.56M14.333 11.72a4.5 4.5 0 010 8.56"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">MACHINE LEARNING</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Regression models, classifiers, data preparation, PyTorch, and TensorFlow.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCrimson mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">LANGUAGES & RUNTIMES</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Advanced Python, Java backend structures, and Node.js for high-throughput microservices.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Creative Technology -->
+                    <div class="skills-category-container flex flex-col gap-6">
+                        <h3 class="text-xs font-heading tracking-widest text-neutral-500 border-b border-white/10 pb-3">CREATIVE TECHNOLOGY</h3>
+                        
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCyan mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">3D WEB DEVELOPMENT</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Interactive WebGL, custom shaders, and GPU-accelerated immersive design environments.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCyan mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.64 8.41a6 6 0 015.84 5.96z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">INTERACTIVE EXPERIENCES</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Scroll-triggered micro-interactions, canvas drawing loops, and fluid mouse physics.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentCyan mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.53 16.122a3 3 0 00-1.305-3.579l-4.516-2.58a3 3 0 00-3.5 4.957l4.516 2.58a3 3 0 004.805-1.378zM14 8.5l4.5 2.5m-4.5-2.5L9.5 6m4.5 2.5l-4.5 2.5m4.5-2.5l4.5-2.5"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">3D DESIGN & UI/UX</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Volumetric scene assembly, material setups, lighting arrays, and spatial UX mapping.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Creative Skills -->
+                    <div class="skills-category-container flex flex-col gap-6">
+                        <h3 class="text-xs font-heading tracking-widest text-neutral-500 border-b border-white/10 pb-3">CREATIVE SKILLS</h3>
+                        
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentViolet mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">LOGO & BRANDING</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Minimal, vector-perfect identity designs, brand grids, and layout rules.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentViolet mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 10.5l-5.25 3V7.5l5.25 3z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">VIDEO EDITING</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Cinematic sound design, pacing, color grading, transitions, and product highlights.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tilt-card glass-card p-6 cursor-explore relative overflow-hidden">
+                            <div class="tilt-card-content flex items-start gap-4">
+                                <div class="text-accentViolet mt-1">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 21l8.904-4.43m-8.904-.666a4.5 4.5 0 119.53 0l-9.53.666z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-lg text-white mb-2">CREATIVE DIRECTION</h4>
+                                    <p class="text-xs text-neutral-400 leading-relaxed font-light">Curating typography, editorial visual themes, art direction, and product narratives.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. BEYOND 2D SECTION -->
+        <section id="beyond2d" class="min-h-screen px-6 md:px-24 py-32 flex flex-col justify-center relative overflow-hidden">
+            <div id="beyond2d-three-canvas" class="absolute inset-0 z-0"></div>
+            
+            <div class="max-w-4xl mx-auto w-full relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center pointer-events-none">
+                <div class="pointer-events-auto">
+                    <span class="text-xs font-heading tracking-widest text-accentCyan block mb-2 uppercase">EXPERIMENT</span>
+                    <h2 class="text-5xl md:text-7xl font-display text-white mb-6">BEYOND 2D</h2>
+                    <h3 class="text-lg font-heading text-accentCyan mb-6 uppercase">3D WEB DEVELOPMENT. TURNING WEBSITES INTO EXPERIENCES.</h3>
+                    
+                    <p class="text-neutral-400 font-light leading-relaxed text-sm mb-8">
+                        The traditional 2D web is static. By integrating custom shaders, physics engines, and volumetric assets, websites evolve from layouts you read into virtual environments you explore.
+                    </p>
+
+                    <ul class="space-y-3 text-xs tracking-wider font-heading text-neutral-300">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-accentCyan rounded-full"></span> 3D PRODUCT EXPERIENCES
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-accentCyan rounded-full"></span> INTERACTIVE SITES & WEBL-ENVIRONMENTS
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-accentCyan rounded-full"></span> SCROLL-BASED CINEMATIC TIMELINES
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-accentCyan rounded-full"></span> IMMERSIVE INTERACTIVE STORYTELLING
+                        </li>
+                    </ul>
+                </div>
+                <div class="hidden md:flex justify-center pointer-events-none">
+                    <div class="text-[10px] tracking-[0.3em] font-heading text-neutral-500 border border-white/10 px-4 py-3 rounded-full animate-pulse">
+                        ← DRAG TO ROTATE SCENE →
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. STARTUPS (BUILDING BEYOND PROJECTS) -->
+        <section id="startups" class="min-h-screen px-6 md:px-24 py-32 bg-black/40 border-y border-white/5 flex flex-col justify-center">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="mb-24 text-center">
+                    <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">ENTREPRENEURSHIP</span>
+                    <h2 class="text-4xl md:text-6xl font-heading text-white">BUILDING BEYOND PROJECTS</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Startup 01: PothOFF -->
+                    <div class="startup-card glass-card p-8 flex flex-col justify-between min-h-[500px]" data-side="left">
+                        <div class="relative w-full h-48 mb-8 overflow-hidden rounded-lg bg-black border border-white/5">
+                            <div id="pothoff-three-canvas" class="w-full h-full"></div>
+                            <div class="absolute bottom-3 left-3 bg-red-600/90 text-white font-heading text-[9px] px-2 py-0.5 rounded tracking-widest uppercase animate-pulse">ROAD SCANNER ACTIVE</div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-heading tracking-widest text-accentCrimson uppercase">STARTUP 01</span>
+                            <!-- Clean Text-only Branding -->
+                            <h3 class="text-4xl font-display text-white mt-1 mb-2">POTHOFF</h3>
+                            <h4 class="text-xs font-heading text-accentCrimson tracking-widest uppercase mb-4">AI-POWERED ROAD INTELLIGENCE</h4>
+                            <p class="text-neutral-400 font-light text-sm leading-relaxed mb-8">
+                                PothOFF is a road infrastructure technology concept focused on using computer vision, GPS-based geo-tagging, and intelligent monitoring to detect and report road damage such as potholes.
+                            </p>
+                        </div>
+                        <a href="#" class="magnetic-btn border border-accentCrimson text-accentCrimson hover:bg-accentCrimson hover:text-white transition-all duration-300 font-heading text-xs tracking-widest py-3 text-center rounded-full cursor-explore">
+                            EXPLORE POTHOFF
+                        </a>
+                    </div>
+
+                    <!-- Service Business: QUadev -->
+                    <div class="startup-card glass-card p-8 flex flex-col justify-between min-h-[500px]" data-side="right">
+                        <div class="relative w-full h-48 mb-8 overflow-hidden rounded-lg bg-black border border-white/5">
+                            <div id="quadev-three-canvas" class="w-full h-full"></div>
+                            <div class="absolute bottom-3 left-3 bg-accentCyan/90 text-white font-heading text-[9px] px-2 py-0.5 rounded tracking-widest uppercase">DYNAMIC ENGINE ENGAGED</div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-heading tracking-widest text-accentCyan uppercase">SERVICE BUSINESS</span>
+                            <!-- Clean Text-only Branding -->
+                            <h3 class="text-4xl font-display text-white mt-1 mb-2">QUADEV</h3>
+                            <h4 class="text-xs font-heading text-accentCyan tracking-widest uppercase mb-4">BUILD. DESIGN. DEPLOY.</h4>
+                            <p class="text-neutral-400 font-light text-sm leading-relaxed mb-8">
+                                Steve is building QUadev, a service-based technology business focused on creating modern digital solutions, custom AI pipeline integrations, and high-fidelity 3D web spaces for client brands.
+                            </p>
+                        </div>
+                        <a href="#" class="magnetic-btn border border-accentCyan text-accentCyan hover:bg-accentCyan hover:text-white transition-all duration-300 font-heading text-xs tracking-widest py-3 text-center rounded-full cursor-explore">
+                            EXPLORE QUADEV
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. PROJECT SHOWCASE -->
+        <section id="work" class="min-h-screen px-6 md:px-24 py-32 flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full">
+                <div class="mb-20 text-center md:text-left">
+                    <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">PORTFOLIO CASE STUDIES</span>
+                    <h2 class="text-4xl md:text-6xl font-heading text-white">SELECTED WORK</h2>
+                </div>
+
+                <div class="space-y-12">
+                    <!-- Project 1 -->
+                    <div class="project-card border-b border-white/10 pb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div class="max-w-2xl">
+                            <span class="text-[10px] font-heading tracking-widest text-neutral-500 uppercase">COMPUTER VISION / DEEP LEARNING</span>
+                            <h3 class="text-2xl md:text-4xl font-heading text-white mt-1 mb-3 hover:text-accentCrimson transition-colors duration-300">CV TRAFFIC ANOMALY PREDICTOR</h3>
+                            <p class="text-neutral-400 font-light text-xs md:text-sm leading-relaxed mb-4">
+                                High-speed traffic density analytics tool using YOLO models and OpenCV tracking to map velocity vectors and flag lane blockages automatically.
+                            </p>
+                            <div class="flex flex-wrap gap-2 text-[9px] font-heading tracking-wider text-neutral-400 uppercase">
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">Python</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">OpenCV</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">YOLOv8</span>
+                            </div>
+                        </div>
+                        <a href="#" class="magnetic-btn border border-white/20 hover:border-white hover:bg-white hover:text-black transition-all duration-300 font-heading text-xs tracking-widest px-8 py-3.5 rounded-full cursor-view whitespace-nowrap self-stretch md:self-auto text-center">
+                            VIEW PROJECT
+                        </a>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card border-b border-white/10 pb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div class="max-w-2xl">
+                            <span class="text-[10px] font-heading tracking-widest text-neutral-500 uppercase">WEBGL / COMPUTER GRAPHICS</span>
+                            <h3 class="text-2xl md:text-4xl font-heading text-white mt-1 mb-3 hover:text-accentCyan transition-colors duration-300">INTERACTIVE WEBGL COSMOS</h3>
+                            <p class="text-neutral-400 font-light text-xs md:text-sm leading-relaxed mb-4">
+                                Interactive astrophysical rendering environment built with Three.js, customized particle orbits, lighting nodes, and glsl shaders to display stellar dynamics.
+                            </p>
+                            <div class="flex flex-wrap gap-2 text-[9px] font-heading tracking-wider text-neutral-400 uppercase">
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">Three.js</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">GLSL Shaders</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">GSAP</span>
+                            </div>
+                        </div>
+                        <a href="#" class="magnetic-btn border border-white/20 hover:border-white hover:bg-white hover:text-black transition-all duration-300 font-heading text-xs tracking-widest px-8 py-3.5 rounded-full cursor-view whitespace-nowrap self-stretch md:self-auto text-center">
+                            VIEW PROJECT
+                        </a>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card border-b border-white/10 pb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                        <div class="max-w-2xl">
+                            <span class="text-[10px] font-heading tracking-widest text-neutral-500 uppercase">AI SIMULATIONS</span>
+                            <h3 class="text-2xl md:text-4xl font-heading text-white mt-1 mb-3 hover:text-accentViolet transition-colors duration-300">AUTONOMOUS PATH NAVIGATION SIMULATOR</h3>
+                            <p class="text-neutral-400 font-light text-xs md:text-sm leading-relaxed mb-4">
+                                Coordinate flight path simulation modeling drone navigation inside dynamic 3D obstacle matrices using reinforcement training logic.
+                            </p>
+                            <div class="flex flex-wrap gap-2 text-[9px] font-heading tracking-wider text-neutral-400 uppercase">
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">Python</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">PyTorch</span>
+                                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded">ThreeJS</span>
+                            </div>
+                        </div>
+                        <a href="#" class="magnetic-btn border border-white/20 hover:border-white hover:bg-white hover:text-black transition-all duration-300 font-heading text-xs tracking-widest px-8 py-3.5 rounded-full cursor-view whitespace-nowrap self-stretch md:self-auto text-center">
+                            VIEW PROJECT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. JOURNEY / TIMELINE -->
+        <section id="journey" class="min-h-screen px-6 md:px-24 py-32 bg-black/20 flex flex-col justify-center">
+            <div class="max-w-4xl mx-auto w-full">
+                <div class="mb-20 text-center">
+                    <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">CHRONICLES</span>
+                    <h2 class="text-4xl md:text-6xl font-heading text-white">THE JOURNEY</h2>
+                </div>
+
+                <!-- Timeline structure -->
+                <div class="relative border-l border-white/10 pl-8 md:pl-16 space-y-16 py-8">
+                    <!-- Timeline Node 2024 -->
+                    <div class="timeline-block relative">
+                        <div class="timeline-dot absolute -left-[45px] md:-left-[77px] top-2 bg-darkBg w-6 h-6 flex items-center justify-center rounded-full"></div>
+                        <span class="text-xs font-heading tracking-widest text-accentCrimson">2024</span>
+                        <h3 class="text-2xl font-heading text-white mt-1 mb-2">STARTED THE JOURNEY</h3>
+                        <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                            Began studying Artificial Intelligence and Machine Learning at K. Ramakrishnan College of Technology. Initiated programming foundations.
+                        </p>
+                    </div>
+
+                    <!-- Timeline Node 2025 -->
+                    <div class="timeline-block relative">
+                        <div class="timeline-dot absolute -left-[45px] md:-left-[77px] top-2 bg-darkBg w-6 h-6 flex items-center justify-center rounded-full"></div>
+                        <span class="text-xs font-heading tracking-widest text-accentCyan">2025</span>
+                        <h3 class="text-2xl font-heading text-white mt-1 mb-2">BUILDING & EXPERIMENTING</h3>
+                        <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                            Started deep exploring machine learning libraries, structural software design, vector branding, and interactive 3D WebGL interfaces.
+                        </p>
+                    </div>
+
+                    <!-- Timeline Node 2026 -->
+                    <div class="timeline-block relative">
+                        <div class="timeline-dot absolute -left-[45px] md:-left-[77px] top-2 bg-darkBg w-6 h-6 flex items-center justify-center rounded-full"></div>
+                        <span class="text-xs font-heading tracking-widest text-accentViolet">2026</span>
+                        <h3 class="text-2xl font-heading text-white mt-1 mb-2">BUILDING PRODUCTS</h3>
+                        <p class="text-neutral-400 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                            Spearheading road anomaly technology concept <strong class="text-white">PothOFF</strong> and developing client solutions agency <strong class="text-white">QUadev</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Future Node -->
+                    <div class="timeline-block relative">
+                        <div class="timeline-dot absolute -left-[45px] md:-left-[77px] top-2 bg-darkBg w-6 h-6 flex items-center justify-center rounded-full"></div>
+                        <span class="text-xs font-heading tracking-widest text-neutral-500">FUTURE</span>
+                        <h3 class="text-2xl font-heading text-white mt-1 mb-2">BUILDING WHAT'S NEXT</h3>
+                        <div class="flex items-center gap-3">
+                            <span class="relative flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                            </span>
+                            <span class="text-xs font-heading tracking-widest text-neutral-400 uppercase">NEXT →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. ABOUT ME -->
+        <section id="about" class="min-h-screen px-6 md:px-24 py-32 flex flex-col justify-center">
+            <div class="max-w-4xl mx-auto w-full">
+                <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">PHILOSOPHY</span>
+                <h2 class="text-4xl md:text-6xl font-heading text-white mb-10">A STUDENT. A BUILDER. AN ENTREPRENEUR.</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-neutral-400 font-light text-sm md:text-base leading-relaxed">
+                    <div>
+                        <p class="mb-6">
+                            Steve Justin is an AI & ML student who thrives at transforming ideas into fully operational digital ecosystems. Whether engineering models, writing logic, or crafting web aesthetics, he seeks to build high-grade software products.
+                        </p>
+                        <p>
+                            From neural networks and software systems to 3D designs, brand identities, and services, he merges engineering logic with visual craftsmanship.
+                        </p>
+                    </div>
+                    <div class="flex flex-col justify-between border-l border-white/5 pl-0 md:pl-8">
+                        <p class="mb-8">
+                            His operational principle is simple:
+                        </p>
+                        <div class="text-white font-heading text-2xl md:text-3xl tracking-widest leading-none space-y-4">
+                            <div class="flex items-center gap-3"><span class="text-accentCrimson font-bold">01/</span> LEARN</div>
+                            <div class="flex items-center gap-3"><span class="text-accentCyan font-bold">02/</span> BUILD</div>
+                            <div class="flex items-center gap-3"><span class="text-accentViolet font-bold">03/</span> EXPERIMENT</div>
+                            <div class="flex items-center gap-3"><span class="text-white font-bold">04/</span> LAUNCH</div>
+                            <div class="text-xs font-heading text-neutral-500 tracking-widest uppercase mt-4">REPEAT. ALWAYS.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. CONTACT SECTION -->
+        <section id="contact" class="min-h-screen px-6 md:px-24 py-32 flex flex-col justify-between relative overflow-hidden">
+            <div></div> <!-- top space -->
+
+            <div class="max-w-4xl mx-auto w-full text-center z-10 my-auto">
+                <span class="text-xs font-heading tracking-widest text-accentCrimson block mb-2 uppercase">COLLABORATION</span>
+                <h2 class="text-5xl md:text-8xl font-display text-white mb-6">
+                    LET'S BUILD SOMETHING UNEXPECTED.
+                </h2>
+                <p class="text-neutral-400 font-light max-w-xl mx-auto leading-relaxed text-sm md:text-base mb-10">
+                    Have an idea, project, collaboration, or opportunity? Let's design and code something meaningful.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="mailto:placeholder@stevejustin.com" class="magnetic-btn bg-white text-black hover:bg-accentCrimson hover:text-white text-xs font-heading tracking-widest px-8 py-4 rounded-full transition-all duration-300 cursor-explore">
+                        START A CONVERSATION
+                    </a>
+                    <a href="#work" class="magnetic-btn border border-white/20 bg-black/40 hover:bg-white hover:text-black hover:border-white text-xs font-heading tracking-widest px-8 py-4 rounded-full transition-all duration-300 cursor-view">
+                        VIEW MY WORK
+                    </a>
+                </div>
+            </div>
+
+            <!-- Social Links & Footer -->
+            <div class="border-t border-white/5 pt-8 w-full z-10">
+                <div class="flex flex-col md:flex-row justify-between items-center text-xs tracking-widest font-heading text-neutral-500 gap-6">
+                    <div>© 2026 STEVE JUSTIN. ALL RIGHTS RESERVED.</div>
+                    
+                    <div class="flex space-x-6 text-[10px] tracking-[0.2em]">
+                        <a href="https://github.com" target="_blank" class="hover:text-white transition-colors duration-300 magnetic-btn">GITHUB</a>
+                        <a href="https://linkedin.com" target="_blank" class="hover:text-white transition-colors duration-300 magnetic-btn">LINKEDIN</a>
+                        <a href="https://instagram.com" target="_blank" class="hover:text-white transition-colors duration-300 magnetic-btn">INSTAGRAM</a>
+                        <a href="mailto:placeholder@stevejustin.com" class="hover:text-white transition-colors duration-300 magnetic-btn">EMAIL</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Script Loads: CDN dependencies -->
+    <!-- ThreeJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Link App Scripts -->
+    <script src="./three-scenes.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
