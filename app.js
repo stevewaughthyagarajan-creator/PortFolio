@@ -302,39 +302,56 @@ function initSilhouetteAnimation() {
   let isAnimating = false;
   const ease = 0.08;
 
-  function getFramePath(index) {
+  function getFramePath(index, isFallback = false) {
     const formattedIndex = String(index).padStart(3, '0');
-    return `./ezgif-30f8329c1b63ad76-jpg/ezgif-frame-${formattedIndex}.jpg`;
+    if (isFallback) {
+      return `./ezgif-30f8329c1b63ad76-jpg/ezgif-frame-${formattedIndex}.jpg`;
+    }
+    return `./ezgif-frame-${formattedIndex}.jpg`;
   }
 
   let hasStarted = false;
 
   // Preload all silhouette images
   function preloadImages() {
-    // Fallback: If network is slow or images missing, start site after 1.5 seconds
+    // Fallback: If network is slow or images missing, start site after 1.2 seconds
     setTimeout(() => {
       if (!hasStarted) {
         startCanvasAnimation();
       }
-    }, 1500);
+    }, 1200);
 
     for (let i = 1; i <= totalFrames; i++) {
       const img = new Image();
-      img.src = getFramePath(i);
+      let triedFallback = false;
+
       img.onload = () => {
         loadedImagesCount++;
         updateProgress();
-        if (loadedImagesCount === totalFrames || (!hasStarted && loadedImagesCount >= 20)) {
+        // If initial frame loaded, render immediately so user sees background right away
+        if (i === 1 && context) {
+          drawImageCover(context, img);
+        }
+        if (loadedImagesCount === totalFrames || (!hasStarted && loadedImagesCount >= 10)) {
           startCanvasAnimation();
         }
       };
+
       img.onerror = () => {
-        loadedImagesCount++;
-        updateProgress();
-        if (loadedImagesCount === totalFrames) {
-          startCanvasAnimation();
+        if (!triedFallback) {
+          triedFallback = true;
+          // Retry with alternate path
+          img.src = getFramePath(i, true);
+        } else {
+          loadedImagesCount++;
+          updateProgress();
+          if (loadedImagesCount === totalFrames || (!hasStarted && loadedImagesCount >= 10)) {
+            startCanvasAnimation();
+          }
         }
       };
+
+      img.src = getFramePath(i, false);
       images.push(img);
     }
   }
@@ -351,6 +368,8 @@ function initSilhouetteAnimation() {
     // Fade out loading screen
     if (loadingScreen) {
       loadingScreen.classList.add('fade-out');
+      loadingScreen.style.opacity = '0';
+      loadingScreen.style.pointerEvents = 'none';
       setTimeout(() => {
         loadingScreen.style.display = 'none';
       }, 500);
